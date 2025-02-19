@@ -3,4 +3,147 @@ lesson: 2
 ---
 
 # Render Props Pattern (Sharing logic between components)
+
+RPP  এর doc অফিশিয়ালি আছে    [React Doc - Legacy](https://legacy.reactjs.org/docs/render-props.html)   তে    । 
+RPP মূলত   Higher Order Components (HOC)  এর এক্সটেন্ডেড ভার্সন, HOC এর থেকে বেটার সুবিধা  পাওয়া যায় বলে এটা বহুল প্রচলিত । যদিও Hooks  আসার পর  HOC এর তেমন আর ব্যবহার হয় না কিন্তু RPP এখনও অনেক ক্ষেত্রে প্রয়োজন পরে  । 
+
+
+জনপ্রিয়  Reactjs  লাইব্রারি এর মধ্যে একটা React Router যা RPP  ব্যবহার করে কাজ করে ।  (যদিও বর্তমান সময়ে পরিবর্তন হতে পারে)  । 
+
+উদাহরণঃ 
+
+```tsx
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+const App = () => (
+  <Router>
+    <Route
+      path="/user"
+      render={() => <h1>User Page</h1>}
+    />
+  </Router>
+);
+
+```
  
+##  Render Props Pattern মূলত কি ও কিভাবে কাজ করে ? 
+Render Prop  এমন একটি টেকনিক  বোঝায় যা কোনও component  প্রপ হিসাবে কোনও ফাংশন পাস করা , সেই ফাংশন দ্বারা পাস করা component কনডিশনালি বা ফাংশনালিটি অন্যযায়ী  রেন্ডার করতে দেয়। 
+Render Props  শব্দটি  render ও props  এই ২টা শব্দ থেকে এসেছে । এখানে  render নামের একটা  props এর মধ্যে আমরা JSX পাস করেতে পারি আবার সেখানেই wrapper  থেকে আমাদের লজিক লেখা ডাটা পেতেও পারি । 
+
+যেমনঃ 
+```jsx
+    <Title render={() => <h1>I am a render prop!</h1>} />
+```
+
+
+ ### উদাহরণঃ 
+ এক্ষেত্রে আমরা আমাদের সেই আগের component  এর উদাহরণ কোডই আবারও  Render props  Pattern দিয়ে করে দেখাব । 
+
+ফোল্ডার স্টাকচারঃ 
+```md 
+/src
+ ├── components
+ │   ├── FetchUsers.tsx  <-- Render Props Component
+ │   ├── UserList.tsx    <-- Uses FetchUsers
+ │   └── UserCard.tsx    <-- (Optional) Single user item component
+ ├── App.tsx
+ ├── main.tsx
+
+```
+
+
+#### ১। FetchUsers.tsx (Render Props Component)
+
+```tsx
+
+import { useEffect, useState } from "react";
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+interface FetchUsersProps {
+  render: (users: User[]) => JSX.Element;
+}
+
+const FetchUsers = ({ render }: FetchUsersProps) => {
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data))
+      .catch((err) => console.error("Error fetching users:", err));
+  }, []);
+
+  return render(users);
+};
+
+export default FetchUsers;
+
+```
+
+#### ২। UserCard.tsx (Optional: Single User Component)
+```tsx
+import { User } from "./FetchUsers";
+
+const UserCard = ({ user }: { user: User }) => {
+  return (
+    <li key={user.id} className="border-b p-2">
+      <strong>{user.name}</strong> - {user.email}
+    </li>
+  );
+};
+
+export default UserCard;
+
+```
+
+#### ৩। UserList.tsx (Uses FetchUsers with Render Props) 
+
+```tsx 
+import FetchUsers from "./FetchUsers";
+import UserCard from "./UserCard";
+
+const UserList = () => {
+  return (
+    <FetchUsers
+      render={(users) => (
+        <div className="rounded-lg bg-gray-100 p-4">
+          <h2 className="mb-2 text-lg font-bold">User List</h2>
+          <ul>
+            {users.map((user) => (
+              <UserCard key={user.id} user={user} />
+            ))}
+          </ul>
+        </div>
+      )}
+    />
+  );
+};
+
+export default UserList;
+
+
+```
+
+#### ৪।  App.tsx 
+````tsx 
+import UserList from "./components/UserList";
+
+const App = () => {
+  return (
+    <div className="container mx-auto p-4">
+      <UserList />
+    </div>
+  );
+};
+
+export default App;
+
+````
+
+
+
