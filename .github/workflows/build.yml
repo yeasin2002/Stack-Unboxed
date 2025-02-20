@@ -40,11 +40,11 @@ jobs:
       - name: Test
         run: bun run test
 
-      # # Optional: Cache the build output
-      # - name: Cache build output
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: dist
-      #     key: ${{ runner.os }}-build-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-build-
+      # Optional: Cache the build output
+      - name: Cache build output
+        uses: actions/cache@v4
+        with:
+          path: dist
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
