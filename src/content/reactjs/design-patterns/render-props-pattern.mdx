@@ -26,7 +26,25 @@ const App = () => (
 
 ```
  
-##  Render Props Pattern মূলত কি ও কিভাবে কাজ করে ? 
+আবার, `react-hook-form`  এর  `Controller` component টাও কিন্তু Render Props দিয়েই করা,  , বিস্তারিত [Official Doc](https://react-hook-form.com/docs/usecontroller/controller)
+
+উদাহরণঃ 
+
+```tsx 
+<Controller
+        control={control}
+        name="ReactDatepicker"
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <ReactDatePicker
+            onChange={onChange} 
+            onBlur={onBlur} 
+            selected={value}
+          />
+       )}
+/>
+```
+
+##  Render Props Pattern  কিভাবে কাজ করে ? 
 Render Prop  এমন একটি টেকনিক  বোঝায় যা কোনও component  প্রপ হিসাবে কোনও ফাংশন পাস করা , সেই ফাংশন দ্বারা পাস করা component কনডিশনালি বা ফাংশনালিটি অন্যযায়ী  রেন্ডার করতে দেয়। 
 Render Props  শব্দটি  render ও props  এই ২টা শব্দ থেকে এসেছে । এখানে  render নামের একটা  props এর মধ্যে আমরা JSX পাস করেতে পারি আবার সেখানেই wrapper  থেকে আমাদের লজিক লেখা ডাটা পেতেও পারি । 
 
