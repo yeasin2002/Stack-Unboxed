@@ -119,31 +119,32 @@ export function CopyButton({ text }: { text: string }) {
 add copy-button to code blocks
 
 ```tsx {1-2,13-15} showLineNumbers title="mdx.tsx"
-import { CopyButton } from "$components/copy-button";
-import { onlyText } from "react-children-utilities";
 
-export function Mdx({ code }: MdxProps) {
-  const Component = useMDXComponent(code);
+// import { CopyButton } from "$components/copy-button";
+// import { onlyText } from "react-children-utilities";
 
-  return (
-    <div className="mdx">
-      <Component
-        components={{
-          pre: ({ className, ...props }: Props) => (
-            <div>
-              <div>
-                <CopyButton text={onlyText(props.children)} />
-              </div>
+// export function Mdx({ code }: MdxProps) {
+//   const Component = useMDXComponent(code);
 
-              <pre className={cn("...", className)} {...props} />
-            </div>
-          ),
-        }}
-      />
-    </div>
-  );
-}
-```
+//   return (
+//     <div className="mdx">
+//       <Component
+//         components={{
+//           pre: ({ className, ...props }: Props) => (
+//             <div>
+//               <div>
+//                 <CopyButton text={onlyText(props.children)} />
+//               </div>
+
+//               <pre className={cn("...", className)} {...props} />
+//             </div>
+//           ),
+//         }}
+//       />
+//     </div>
+//   );
+// }
+// ```
 
 #### Display Line Numbers
 
