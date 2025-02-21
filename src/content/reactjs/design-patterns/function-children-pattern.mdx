@@ -3,3 +3,48 @@ lesson: 3
 ---
 
 # Function Children Pattern (Hooks inside JSX)
+FCP  মুলত `Render Props`    এর  আপডেট ভার্সন ।  যেখানে  `render props ` ব্যবহার করা যায় সেখানেই  `Function Children Pattern`  ব্যবহার করা যায়  । 
+
+
+## 🔹 Function Children Pattern কি?
+Function Children Pattern হলো একটি React pattern যেখানে একটি component তার children হিসেবে একটি function গ্রহণ করে এবং সেই function কে render করার সময় call করে। এই pattern সাধারণত তখন ব্যবহৃত হয় যখন parent component তার child component কে কিছু state বা props পাঠাতে চায় এবং child component সেটি ব্যবহার করে dynamic ভাবে content render করে।
+
+
+### গঠন (বেসিক উদাহরণ )  
+
+```tsx
+type RenderProps = {
+  count: number;
+  increment: () => void;
+};
+
+const Counter = ({ children }: { children: (props: RenderProps) => React.ReactNode }) => {
+  const [count, setCount] = React.useState(0);
+
+  const increment = () => setCount((prev) => prev + 1);
+
+  return <>{children({ count, increment })}</>;
+};
+
+const App = () => {
+  return (
+    <Counter>
+      {({ count, increment }) => (
+        <div>
+          <p>Count: {count}</p>
+          <button onClick={increment}>Increment</button>
+        </div>
+      )}
+    </Counter>
+  );
+};
+
+export default App;
+
+```
+
+
+### render props  এর থেকে কি বেশি সুবিধা  পাই ? 
+ - render props  এর ক্ষেত্রে    নেস্টেড বা অনেক JSX  হলে তা জটিল হয় এক্ষেত্রে function children এর ক্ষেত্রে তা সহজ হয় । 
+ - তুলনামূলক কম কোড ও সহজ হয় । 
+ - কোন এক্সট্রা  props এর type লেখা লাগে না (TypeScript এর ক্ষেত্রে) 
