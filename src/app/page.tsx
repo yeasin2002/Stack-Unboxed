@@ -8,7 +8,8 @@ import {
   UserReview
 } from '@/components/Homepage';
 
-import { ScatteredDotsBg } from '@/components/shared';
+// import { ScatteredDotsBg } from '@/components/shared';
+import { Particles } from '@/components/shared/particles';
 
 export default function Home() {
   return (
@@ -17,7 +18,14 @@ export default function Home() {
       <Hero />
       <UserReview />
       <div className="relative">
-        <ScatteredDotsBg />
+        <Particles
+          className="absolute inset-0"
+          quantity={100}
+          ease={80}
+          color={`#ffffff`}
+          refresh
+        />
+        {/* <ScatteredDotsBg /> */}
         <FrequentlyAskedQuestions />
         <AboutMaintainer />
         <Contributors />

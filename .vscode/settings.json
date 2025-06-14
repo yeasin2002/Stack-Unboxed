@@ -1,4 +1,5 @@
 {
+  "editor.fontFamily": "'Noto Sans Bengali', Kurale",
   "files.associations": {
     "*.css": "tailwindcss"
   },
